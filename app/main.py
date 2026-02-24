@@ -1,14 +1,13 @@
 from fastapi import FastAPI
+from app.routers import chat
+from app.routers import health
+from app.core.config import settings
 import logging
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="LLM Core Service")
-
-@app.get("/health")
-async def health_check():
-    logger.info("Health check endpoint called")
-    return {"status": "healthy",
-            "service": "my first api",
-            "version":1.0}
+app.include_router(health.router)
+logger.info("Testing chat router now")
+app.include_router(chat.router)
